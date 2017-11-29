@@ -36,8 +36,8 @@ import numpy as np
 import importlib
 import itertools
 import argparse
-import src.facenet as facenet
-import src.lfw as lfw
+import facenet as facenet
+import lfw as lfw
 
 from tensorflow.python.ops import data_flow_ops
 
