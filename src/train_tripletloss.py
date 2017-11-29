@@ -36,8 +36,8 @@ import numpy as np
 import importlib
 import itertools
 import argparse
-import facenet
-import lfw
+import src.facenet as facenet
+import src.lfw as lfw
 
 from tensorflow.python.ops import data_flow_ops
 
@@ -317,7 +317,9 @@ def sample_people(dataset, people_per_batch, images_per_person):
     np.random.shuffle(class_indices)
     
     i = 0
+    # 本批次的图片路径
     image_paths = []
+    # 每个类别的图片数量，与image_path的一一对应
     num_per_class = []
     sampled_class_indices = []
     # Sample images from these classes until we have enough
@@ -326,8 +328,11 @@ def sample_people(dataset, people_per_batch, images_per_person):
         nrof_images_in_class = len(dataset[class_index])
         image_indices = np.arange(nrof_images_in_class)
         np.random.shuffle(image_indices)
+        # （同一类中图片数量，每个类别中最多能加入的图片，还可以加入到本批样本的图片数量）
         nrof_images_from_class = min(nrof_images_in_class, images_per_person, nrof_images-len(image_paths))
+        # 记录下可以加入样本的图片id
         idx = image_indices[0:nrof_images_from_class]
+        # 该类别加入样本的图片路径数组
         image_paths_for_class = [dataset[class_index].image_paths[j] for j in idx]
         sampled_class_indices += [class_index]*nrof_images_from_class
         image_paths += image_paths_for_class
